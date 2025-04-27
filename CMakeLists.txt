@@ -25,6 +25,10 @@ find_package(OpenCV 4.2 REQUIRED)
 find_package(Eigen3 3.3.0 REQUIRED) # Matched with Sophus
 find_package(Pangolin REQUIRED)
 find_package(image_transport REQUIRED)
+# Added below packages
+find_package(pcl_conversions REQUIRED)
+find_package(pcl_ros REQUIRED)
+find_package(PCL REQUIRED)
 
 
 # Header file locations [C++ node]
@@ -32,6 +36,7 @@ include_directories(include) # Add .hpp, .h files from include/ros2_orb_slam3
 include_directories(${EIGEN3_INCLUDE_DIRS}) # Include headers for eigen3
 include_directories(${Pangolin_INCLUDE_DIRS}) # include headers for pangolin
 include_directories(${OpenCV_INCLUDE_DIRS}) # include headers for pangolin
+include_directories(${PCL_INCLUDE_DIRS})
 
 
 # ORB-SLAM3 includes [VSLAM library]
@@ -43,8 +48,13 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/orb_slam3/Thirdparty
   ${PROJECT_SOURCE_DIR}/orb_slam3/Thirdparty/Sophus
   ${ament_INCLUDE_DIRS}
+  # Added
+  ${OpenCV_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
 )
 
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   rclcpp
@@ -57,6 +67,8 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   OpenCV
   Eigen3
   Pangolin
+  pcl_conversions
+  pcl_ros
 )
 
 #* ORB SLAM3 as a shared library
@@ -136,6 +148,7 @@ target_link_libraries(orb_slam3_lib
   ${Pangolin_LIBRARIES}
   ${PROJECT_SOURCE_DIR}/orb_slam3/Thirdparty/DBoW2/lib/libDBoW2.so
   ${PROJECT_SOURCE_DIR}/orb_slam3/Thirdparty/g2o/lib/libg2o.so
+  ${PCL_LIBRARIES}
   -lboost_system
   -lboost_serialization
   -lcrypto 
@@ -161,7 +174,7 @@ ament_target_dependencies(mono_node_cpp
   PUBLIC ${THIS_PACKAGE_INCLUDE_DEPENDS}
 )
 
-target_link_libraries(mono_node_cpp PUBLIC orb_slam3_lib) # Link a node with the internal shared library
+target_link_libraries(mono_node_cpp PUBLIC orb_slam3_lib ${PCL_LIBRARIES}) # Link a node with the internal shared library
 
 
 # Install all the header files in package/package/include

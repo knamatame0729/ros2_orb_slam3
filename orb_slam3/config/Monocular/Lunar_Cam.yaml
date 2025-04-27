@@ -8,10 +8,12 @@ File.version: "1.0"
 Camera.type: "PinHole"
 
 # Camera calibration and distortion parameters (OpenCV)
-Camera1.fx: 902.26
-Camera1.fy: 507.72
-Camera1.cx: 640.0
-Camera1.cy: 360.0
+# Perfect pinhole camera with square pixels
+# FOV : 1.22 rads
+Camera1.fx: 329.2 
+Camera1.fy: 329.2 
+Camera1.cx: 240.0 
+Camera1.cy: 240.0
 
 Camera1.k1: 0.0
 Camera1.k2: 0.0
@@ -19,34 +21,39 @@ Camera1.p1: 0.0
 Camera1.p2: 0.0
 
 # Camera frames per second
-Camera.fps: 30
+Camera.fps: 4
 
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
 Camera.RGB: 1
 
 # Camera resolution
-Camera.width: 1280
-Camera.height: 720
+Camera.width: 480
+Camera.height: 480 
 
 #--------------------------------------------------------------------------------------------
 # ORB Parameters
 #--------------------------------------------------------------------------------------------
 
 # ORB Extractor: Number of features per image
-ORBextractor.nFeatures: 4000
+ORBextractor.nFeatures: 5000
 
 # ORB Extractor: Scale factor between levels in the scale pyramid 	
 ORBextractor.scaleFactor: 1.2
 
 # ORB Extractor: Number of levels in the scale pyramid	
-ORBextractor.nLevels: 8
+ORBextractor.nLevels: 10
 
 # ORB Extractor: Fast threshold
 # Image is divided in a grid. At each cell FAST are extracted imposing a minimum response.
 # Firstly we impose iniThFAST. If no corners are detected we impose a lower value minThFAST
 # You can lower these values if your images have low contrast			
-ORBextractor.iniThFAST: 7
-ORBextractor.minThFAST: 2
+ORBextractor.iniThFAST: 12
+ORBextractor.minThFAST: 5
+
+Tracking.thRefRatio: 0.3
+Tracking.minFrames: 10000
+Tracking.minNumMatches: 2
+T#racking.maxFramesLost: 52
 
 #--------------------------------------------------------------------------------------------
 # Viewer Parameters
