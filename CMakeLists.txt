@@ -164,15 +164,28 @@ install(FILES ${DBoW2_PATH} DESTINATION lib)
 install(FILES ${g2o_PATH} DESTINATION lib)
 
 
-# Add executable
+# Add executable (Stereo Camera)
+add_executable(stereo_node_cpp
+  src/stereo_example.cpp
+  src/stereo_mode.cpp
+)
+
+# Add executable (Mono Camera)
 add_executable(mono_node_cpp
   src/mono_example.cpp
   src/common.cpp
 )
 
+
+ament_target_dependencies(stereo_node_cpp
+  PUBLIC ${THIS_PACKAGE_INCLUDE_DEPENDS}
+)
+
 ament_target_dependencies(mono_node_cpp
   PUBLIC ${THIS_PACKAGE_INCLUDE_DEPENDS}
 )
+
+target_link_libraries(stereo_node_cpp PUBLIC orb_slam3_lib ${PCL_LIBRARIES}) # Link a node with the internal shared library
 
 target_link_libraries(mono_node_cpp PUBLIC orb_slam3_lib ${PCL_LIBRARIES}) # Link a node with the internal shared library
 
@@ -183,7 +196,7 @@ install (DIRECTORY include/
 )
 
 # Install our node and library
-install(TARGETS mono_node_cpp orb_slam3_lib
+install(TARGETS stereo_node_cpp mono_node_cpp orb_slam3_lib
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
@@ -206,9 +219,10 @@ ament_python_install_package(${PROJECT_NAME}) # Install the modules in ros2_orb_
 
 # Install Python executibles
 install(PROGRAMS
-  scripts/mono_driver_node.py
-  scripts/lunar_mono_driver.py
-  scripts/down_mono_driver.py
+  #scripts/mono_driver_node.py
+  #scripts/lunar_mono_driver.py
+  #scripts/down_mono_driver.py
+  scripts/stereo_driver_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

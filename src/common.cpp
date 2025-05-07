@@ -241,11 +241,6 @@ void MonocularMode::publishPointCloud(){
         RCLCPP_ERROR(this->get_logger(), "Skipping point cloud publish: pAgent is null");
         return;
     }
-    if (latest_semantic_mask_.empty())
-    {
-        RCLCPP_ERROR(this->get_logger(), "Skipping point cloud publish: Semantic mask is empty");
-        return;
-    }
 
     // Get Map Points that is been tracking
     std::vector<ORB_SLAM3::MapPoint*> map_points = pAgent->GetTrackedMapPoints();
